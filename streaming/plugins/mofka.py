@@ -64,10 +64,10 @@ class Mofka(BaseStream):
         self.producer = None
         self.consumer = None
 
-    def producer(self, *args, **kwargs) -> MofkaProducer:
+    def create_producer(self, *args, **kwargs) -> MofkaProducer:
         self.producer = MofkaProducer(*args, **kwargs)
 
-    def consumer(self, *args, **kwargs) -> MofkaConsumer:
+    def create_consumer(self, *args, **kwargs) -> MofkaConsumer:
         self.consumer = MofkaConsumer(*args, **kwargs)
 
 

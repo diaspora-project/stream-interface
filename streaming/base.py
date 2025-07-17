@@ -10,11 +10,11 @@ class BaseStream(ABC):
     """
 
     @abstractmethod
-    def producer(self):
+    def create_producer(self):
         pass
 
     @abstractmethod
-    def consumer(self):
+    def create_consumer(self):
         pass
 
 
