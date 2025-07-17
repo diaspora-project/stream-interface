@@ -6,7 +6,8 @@ authors = [
     { name = "Valerie Hayot-Sasson", email = "vhayot@uchicago.edu"    },
 ]
 dependencies = [
-    "diaspora-event-sdk"
+    "diaspora-event-sdk",
+    "cloudpickle"
 ]
 
 [project.optional-dependencies]
