@@ -65,15 +65,15 @@ class Mofka(BaseStream):
         self.consumer = None
 
     def create_producer(self, *args, **kwargs) -> MofkaProducer:
-        self.producer = MofkaProducer(*args, **kwargs)
+        self.producer = MofkaProducer(*args, driver=self._driver, **kwargs)
 
     def create_consumer(self, *args, **kwargs) -> MofkaConsumer:
-        self.consumer = MofkaConsumer(*args, **kwargs)
+        self.consumer = MofkaConsumer(*args, driver=self._driver, **kwargs)
 
 
 class MofkaProducer(Producer):
 
-    def __init__(self, driver, value_serializer, **kwargs):
+    def __init__(self, driver, **kwargs):
         self._topics: dict = {}
         self._producers: dict = {}
         self._driver = driver
@@ -120,6 +120,7 @@ class MofkaProducer(Producer):
 class MofkaConsumer(Consumer):
 
     def __init__(self, driver, topic: str, auto_offset_reset="earliest", **kwargs):
+        self._driver = driver
 
         if "subscriber_name" in kwargs:
             subscriber_name = kwargs["subscriber_name"]
