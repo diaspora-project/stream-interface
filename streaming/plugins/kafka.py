@@ -16,10 +16,10 @@ def value_deserializer(x):
 
 
 class Kafka(BaseStream):
-    def __init__(self, streamtype: str = "kafka"):
+    def __init__(self, stream_type: str = "kafka"):
         self.producer = None
         self.consumer = None
-        self.type = streamtype
+        self.type = stream_type
 
     def create_producer(self, *args, **kwargs) -> StreamKafkaProducer:
         self.producer = StreamKafkaProducer(self.type, *args, **kwargs)
@@ -36,9 +36,9 @@ class Kafka(BaseStream):
 
 class StreamKafkaProducer(Producer):
 
-    def __init__(self, streamtype: str, value_serializer=value_serializer, **kwargs):
+    def __init__(self, stream_type: str, value_serializer=value_serializer, **kwargs):
 
-        if streamtype.lower() == "octopus":
+        if stream_type.lower() == "octopus":
             from diaspora_event_sdk import KafkaProducer
         else:
             from kafka import KafkaProducer
@@ -59,14 +59,14 @@ class StreamKafkaConsumer(Consumer):
 
     def __init__(
         self,
-        streamtype: str,
+        stream_type: str,
         topic: str,
         auto_offset_reset="earliest",
         value_deserializer=value_deserializer,
         consumer_timeout_ms=-1,
         **kwargs,
     ):
-        if streamtype.lower() == "octopus":
+        if stream_type.lower() == "octopus":
             from diaspora_event_sdk import KafkaConsumer
         else:
             from kafka import KafkaConsumer

@@ -40,5 +40,5 @@ def test_produce_and_consume(group_file="mofka.json"):
 
 def test_framework_resolve():
 
-    s = Stream(type="mofka")
+    s = Stream(stream_type="mofka")
     assert isinstance(s, Mofka)

@@ -1,8 +1,7 @@
 import pytest
 import os
 
-from diaspora_event_sdk import Client as GlobusClient
-
+import streaming
 from streaming.plugins.kafka import Kafka
 from streaming.plugins.octopus import Octopus
 from streaming.plugins.redpanda import Redpanda
@@ -32,6 +31,8 @@ def test_stream_init(StreamFramework, bootstrap_servers):
     assert framework.producer is not None
     assert framework.consumer is not None
 
+    framework.close()
+
 
 @pytest.mark.parametrize(
     "StreamFramework, bootstrap_servers",
@@ -60,14 +61,43 @@ def test_produce_and_consume(StreamFramework, bootstrap_servers):
 
     assert m.value == "message-99"
 
+    framework.close()
+
 
 def test_framework_resolve():
 
-    s = Stream(type="kafka")
+    s = Stream(stream_type="kafka")
     assert isinstance(s, Kafka)
 
-    s = Stream(type="octopus")
+    s = Stream(stream_type="octopus")
     assert isinstance(s, Octopus)
 
-    s = Stream(type="redpanda")
+    s = Stream(stream_type="redpanda")
     assert isinstance(s, Redpanda)
+
+
+@pytest.mark.parametrize(
+    "config_file",
+    [
+        "tests/configs/kafka_config.toml",
+        "tests/configs/redpanda_config.toml",
+        "tests/configs/octopus_config.toml",
+    ],
+)
+def test_config(config_file):
+    topic = "test-streaming-api-2"
+    s = streaming.from_config(config_file)
+
+    for i in range(0, 100):
+        s.producer.send(topic=topic, metadata=f"message-{i}")
+
+    s.producer.close()
+
+    count = 0
+    for i, m in enumerate(s.consumer):
+        if i == 99:
+            break
+
+    assert m.value == "message-99"
+
+    s.close()

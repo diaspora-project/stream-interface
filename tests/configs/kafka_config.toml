@@ -1,0 +1,9 @@
+[base]
+stream_type = "kafka"
+
+[producer]
+bootstrap_servers = ["localhost:9094"]
+
+[consumer]
+bootstrap_servers = ["localhost:9094"]
+topic = "test-streaming-api-2"

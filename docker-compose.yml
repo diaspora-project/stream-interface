@@ -55,6 +55,8 @@ services:
       - 18082:18082
       - 19092:19092
       - 19644:9644
+    post_start:
+      - command: sleep 10 && rpk topic create test-streaming-api-2 
   console:
     container_name: redpanda-console
     image: docker.redpanda.com/redpandadata/console:v3.1.2
